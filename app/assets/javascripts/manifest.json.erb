@@ -1,0 +1,18 @@
+<% icon_sizes = Rails.configuration.serviceworker.icon_sizes %>
+{
+  "name": "指差しチェッカー",
+  "short_name": "y_checker",
+  "start_url": "/",
+  "icons": [
+
+    {
+      "src": "<%=image_path("icon.png")%>",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#DC4914",
+  "background_color": "#DC4914",
+  "display": "fullscreen",
+  "orientation": "portrait"
+}

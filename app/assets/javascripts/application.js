@@ -11,10 +11,20 @@
 // about supported directives.
 //
 //= require jquery
+//= require serviceworker-companion
 //= require rails-ujs
 //= require activestorage
 //= require_tree .
 
+// safari起動させないための記述
+$(function(){
+  $('a').click(function(){
+    location.href = $(this).attr('href');
+    return false;
+  });
+});
+
+var kcheck = true;
 $(document).ready(function(){
 
 
@@ -51,6 +61,19 @@ $(document).ready(function(){
  
 // }); 
 
+$(function(){
+	console.log(kcheck+"before");
+		$(".plus-icon").click(function(){
+			if(kcheck){
+			$('#kitchen-icon').fadeOut();
+			$('#kitchen-icon').attr('src', '/assets/キッチンチェック-4cee3571a74e25d1c15c053e53b3487a46bef6476176bec7d31ca3c3971880e2.png');
+            $('#kitchen-icon').fadeIn(500);
+            kcheck = false;
+			console.log(kcheck);
+		}
+	});
+});
+
 
 $(function(){
   $('.scroll').click(function(){
@@ -85,3 +108,4 @@ $(document).on('click',   function(e) {
 });
 
 
+//= require serviceworker-companion
