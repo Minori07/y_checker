@@ -47,6 +47,7 @@ $(document).ready(function(){
 
         // $(this).addClass("colorchange");
         $(this).attr('id', 'color');
+        console.log($l_at);
         if($l_at.length == 2){
         	$(".timeshow").toggle();
     	}
