@@ -1,4 +1,4 @@
-oclass CreateLists < ActiveRecord::Migration[5.2]
+class CreateLists < ActiveRecord::Migration[5.2]
   def change
     create_table :lists do |t|
     	t.string :name, null: false #リスト名
