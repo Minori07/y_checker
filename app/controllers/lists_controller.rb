@@ -20,7 +20,7 @@ class ListsController < ApplicationController
 	imap = Net::IMAP.new(imap_host, imap_port, imap_usessl)
 	# imapにログイン
 	imap_user = 'minotaka.0730@gmail.com'
-	imap_passwd = '0730Minori'
+	imap_passwd = 'dzzaypxjafwutmtw'
 	imap.login(imap_user, imap_passwd)
 
 	imap.select('INBOX') # 対象のメールボックスを選択
