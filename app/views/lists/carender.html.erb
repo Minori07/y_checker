@@ -51,7 +51,7 @@
        <%= image_tag("カレンダー用チェック.png", :class => "carender-icon") %>
        <% m = 0 %>
        <% current_user.lists.where(c_day: d_day).each do |list| %>
-       	<% if list.switch == 1 && list.room == 1 && list.name == "00" %>
+       	<% if list.switch == 1 && list.room == 0 && list.name == "00" %>
        		<div class ="l_time">
        			<% if m == 0 %>
        			,<% m = 1 %>
