@@ -9,61 +9,61 @@ class ListsController < ApplicationController
   	last_s = @lists[@lists.length-1].switch
   	last_r = @lists[@lists.length-1].room
 
-  	require 'net/imap'
-	require 'kconv'
-	require 'mail'
+ #  	require 'net/imap'
+	# require 'kconv'
+	# require 'mail'
 
-	# imapに接続
-	imap_host = 'imap.gmail.com' # imapをgmailのhostに設定する
-	imap_usessl = true # imapのsslを有効にする
-	imap_port = 993 # ssl有効なら993、そうでなければ143
-	imap = Net::IMAP.new(imap_host, imap_port, imap_usessl)
-	# imapにログイン
-	imap_user = 'minotaka.0730@gmail.com'
-	imap_passwd = '0730Minori'
-	imap.login(imap_user, imap_passwd)
+	# # imapに接続
+	# imap_host = 'imap.gmail.com' # imapをgmailのhostに設定する
+	# imap_usessl = true # imapのsslを有効にする
+	# imap_port = 993 # ssl有効なら993、そうでなければ143
+	# imap = Net::IMAP.new(imap_host, imap_port, imap_usessl)
+	# # imapにログイン
+	# imap_user = 'minotaka.0730@gmail.com'
+	# imap_passwd = '0730Minori'
+	# imap.login(imap_user, imap_passwd)
 
-	imap.select('INBOX') # 対象のメールボックスを選択
-	ids = imap.search(['ALL']) # 全てのメールを取得
+	# imap.select('INBOX') # 対象のメールボックスを選択
+	# ids = imap.search(['ALL']) # 全てのメールを取得
 
-	imap.fetch(ids, "RFC822").each do |mail|
-	  m = Mail.new(mail.attr["RFC822"])
-	  # multipartなメールかチェック
-	  if m.multipart?
-	    # plantextなメールかチェック
-	    if m.text_part
-	      @body = m.text_part.decoded.to_s
-	    # htmlなメールかチェック
-	    elsif m.html_par
-	      body = m.html_part.decoded
-	    end
-	  else
-	    body = m.body
-	  end
-	end
+	# imap.fetch(ids, "RFC822").each do |mail|
+	#   m = Mail.new(mail.attr["RFC822"])
+	#   # multipartなメールかチェック
+	#   if m.multipart?
+	#     # plantextなメールかチェック
+	#     if m.text_part
+	#       @body = m.text_part.decoded.to_s
+	#     # htmlなメールかチェック
+	#     elsif m.html_par
+	#       body = m.html_part.decoded
+	#     end
+	#   else
+	#     body = m.body
+	#   end
+	# end
 
-	@b = @body.split(",")
-	    if @b[0] == "test" 
-	    	if last_s ==  1 && @b[1] != last_n && @b[3] != last_r
-				list = List.new
-				list = current_user.lists.new
-				list.name = @b[1]
-				list.switch = 1
-				list.c_at = Time.parse(@b[2])
-				list.c_day = Date.parse(@b[2])
-				list.room = @b[3].to_i
-				list.save!
-			elsif last_s == 0 && Time.parse(@b[2]) != last_a
-				list = List.new
-				list = current_user.lists.new
-				list.name = @b[1]
-				list.switch = 1
-				list.c_at = Time.parse(@b[2])
-				list.c_day = Date.parse(@b[2])
-				list.room = @b[3].to_i
-				list.save!
-			end
-		end
+	# @b = @body.split(",")
+	#     if @b[0] == "test" 
+	#     	if last_s ==  1 && @b[1] != last_n && @b[3] != last_r
+	# 			list = List.new
+	# 			list = current_user.lists.new
+	# 			list.name = @b[1]
+	# 			list.switch = 1
+	# 			list.c_at = Time.parse(@b[2])
+	# 			list.c_day = Date.parse(@b[2])
+	# 			list.room = @b[3].to_i
+	# 			list.save!
+	# 		elsif last_s == 0 && Time.parse(@b[2]) != last_a
+	# 			list = List.new
+	# 			list = current_user.lists.new
+	# 			list.name = @b[1]
+	# 			list.switch = 1
+	# 			list.c_at = Time.parse(@b[2])
+	# 			list.c_day = Date.parse(@b[2])
+	# 			list.room = @b[3].to_i
+	# 			list.save!
+	# 		end
+	# 	end
 
 	
 
