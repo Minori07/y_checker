@@ -2,7 +2,7 @@ class ListsController < ApplicationController
   before_action :authenticate_user!
   def index
   	@lists = current_user.lists
-  	@spaces = current_user.spaces
+  	@spaces = current_user.spaces.order("room")
   	@body = []
   	last = @lists[@lists.length-1]
   	reset = @lists[@lists.length-(@spaces.length+1)]
@@ -84,7 +84,7 @@ class ListsController < ApplicationController
   end
 
   def reset
-  	spaces = current_user.spaces
+  	spaces = current_user.spaces.order("room")
   	i = 0
   	s = 0
   	for n in 0..4 do
