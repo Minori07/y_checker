@@ -3,18 +3,11 @@ class ListsController < ApplicationController
   def index
   	@lists = current_user.lists
   	@spaces = current_user.spaces
-  	@body = []
-  	last = @lists[@lists.length-1]
-  	reset = @lists[@lists.length-(@spaces.length+1)]
-  	l_y = last.c_at.year
-  	l_m = last.c_at.month
-  	l_d = last.c_at.day
-  	msg = "test,#{last.name},#{l_y}/#{l_m}/#{l_d} #{last.c_at.strftime("%H:%M:%S")},#{last.room},\n"
-  	r_y = reset.c_at.year
-  	r_m = reset.c_at.month
-  	r_d = reset.c_at.day
-  	msg2 = "test,#{reset.name},#{r_y}/#{r_m}/#{r_d} #{reset.c_at.strftime("%H:%M:%S")},#{reset.room},\n"
-  	same = 0
+  	@body = "なし"
+  	last_n = @lists[@lists.length-1].name
+  	last_a = @lists[@lists.length-(@spaces.length+1)].c_at
+  	last_s = @lists[@lists.length-1].switch
+  	last_r = @lists[@lists.length-1].room
 
   	require 'net/imap'
 	require 'kconv'
@@ -39,22 +32,7 @@ class ListsController < ApplicationController
 	  if m.multipart?
 	    # plantextなメールかチェック
 	    if m.text_part
-	    	if last.switch == 1
-		    	if m.text_part.decoded.to_s == msg
-		    		same = 1
-		    	end
-		    	if same == 1 && m.text_part.decoded.to_s != msg
-		    		@body.push(m.text_part.decoded.to_s)
-		    	end
-	    	elsif last.switch == 0
-	    		if m.text_part.decoded.to_s == msg2
-		    		same = 1
-		    	end
-		    	if same == 1 && m.text_part.decoded.to_s != msg2
-		    		@body.push(m.text_part.decoded.to_s)
-		    	end
-		    end
-
+	      @body = m.text_part.decoded.to_s
 	    # htmlなメールかチェック
 	    elsif m.html_par
 	      body = m.html_part.decoded
@@ -64,20 +42,33 @@ class ListsController < ApplicationController
 	  end
 	end
 
-	@body.each do |body|
-		@b = body.split(",")
-		list = List.new
-		list = current_user.lists.new
-		list.name = @b[1]
-		list.switch = 1
-		list.c_at = Time.parse(@b[2])
-		list.c_day = Date.parse(@b[2])
-		list.room = @b[3].to_i
-		list.save!
-	end
+	@b = @body.split(",")
+	    if @b[0] == "test" 
+	    	if last_s ==  1 && @b[1] != last_n && @b[3] != last_r
+				list = List.new
+				list = current_user.lists.new
+				list.name = @b[1]
+				list.switch = 1
+				list.c_at = Time.parse(@b[2])
+				list.c_day = Date.parse(@b[2])
+				list.room = @b[3].to_i
+				list.save!
+			elsif last_s == 0 && Time.parse(@b[2]) != last_a
+				list = List.new
+				list = current_user.lists.new
+				list.name = @b[1]
+				list.switch = 1
+				list.c_at = Time.parse(@b[2])
+				list.c_day = Date.parse(@b[2])
+				list.room = @b[3].to_i
+				list.save!
+			end
+		end
+
+	
 
   end
-
+  
   def room
   	@spaces = target_space params[:room]
   	@lists = target_room params[:room]
