@@ -9,9 +9,6 @@
 	<% l_onf.push(0) %>
 	<% end %>
 	<% @lists.each do |list| %>
-	<%= list.name %>
-	<%= list.c_at %>
-	<%= button_to 'delete', list_path(list), method: :delete, data: { confirm: '削除しますか？' }%>
 		<% l_onf[list.name.to_i] = list.switch %>
 	<% end %>
 
