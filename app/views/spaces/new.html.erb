@@ -19,5 +19,6 @@
 <% @spaces.each do |space| %>
   <%= space.name %>:
   <%= r[space.room] %>
+  <%= button_to 'delete', space_path(space), method: :delete, data: { confirm: '削除しますか？' }%>
   <br>
 <% end %>
